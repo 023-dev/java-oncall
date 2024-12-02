@@ -10,6 +10,7 @@ import oncall.model.domain.schedule.OnCallMonth;
 import oncall.model.domain.worker.HolidayWorkers;
 import oncall.model.domain.worker.WeekdayWorkers;
 import oncall.model.domain.worker.Worker;
+import oncall.model.dto.worker.WorkersDto;
 
 public class InputView {
     private static final String PROMPT_MESSAGE_OF_MONTH_AND_START_DAY_ = "비상 근무를 배정할 월과 시작 요일을 입력하세요> ";
@@ -23,20 +24,24 @@ public class InputView {
         return onCallMonth;
     }
 
-    public static WeekdayWorkers readWeekdayWorker() {
+    public static WorkersDto readWorkers() {
+        WeekdayWorkers weekdayWorkers = readWeekdayWorker();
+        HolidayWorkers holidayWorkers = readHolidayWorker(weekdayWorkers);
+        return new WorkersDto(weekdayWorkers, holidayWorkers);
+    }
+
+    private static WeekdayWorkers readWeekdayWorker() {
         prompt(PROMPT_MESSAGE_OF_WEEKDAY_WORKER);
         String input = read();
         List<Worker> workers = parseWorkers(input);
-        WeekdayWorkers weekdayWorkers = new WeekdayWorkers(workers);
-        return weekdayWorkers;
+        return new WeekdayWorkers(workers);
     }
 
-    public static HolidayWorkers readHolidayWorker() {
+    private static HolidayWorkers readHolidayWorker(WeekdayWorkers weekdayWorkers) {
         prompt(PROMPT_MESSAGE_OF_HOLIDAY_WORKER);
         String input = read();
         List<Worker> workers = parseWorkers(input);
-        HolidayWorkers holidayWorkers = new HolidayWorkers(workers);
-        return holidayWorkers;
+        return new HolidayWorkers(workers, weekdayWorkers);
     }
 
     private static void prompt(String message) {
