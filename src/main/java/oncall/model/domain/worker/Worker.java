@@ -16,4 +16,8 @@ public record Worker(String nickname) {
         }
         return nickname;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
 }
