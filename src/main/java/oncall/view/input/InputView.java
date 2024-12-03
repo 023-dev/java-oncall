@@ -6,25 +6,24 @@ import camp.nextstep.edu.missionutils.Console;
 
 import java.util.List;
 import oncall.exception.custom.InvalidException;
-import oncall.model.domain.schedule.OnCallMonth;
+import oncall.model.domain.schedule.Schedule;
 import oncall.model.domain.worker.HolidayWorkers;
 import oncall.model.domain.worker.WeekdayWorkers;
 import oncall.model.domain.worker.Worker;
 import oncall.model.dto.worker.WorkersDto;
 
 public class InputView {
-    private static final String PROMPT_MESSAGE_OF_MONTH_AND_START_DAY_ = "비상 근무를 배정할 월과 시작 요일을 입력하세요> ";
+    private static final String PROMPT_MESSAGE_OF_MONTH_AND_START_DAY = "비상 근무를 배정할 월과 시작 요일을 입력하세요> ";
     private static final String PROMPT_MESSAGE_OF_WEEKDAY_WORKER = "평일 비상 근무 순번대로 사원 닉네임을 입력하세요> ";
     private static final String PROMPT_MESSAGE_OF_HOLIDAY_WORKER = "휴일 비상 근무 순번대로 사원 닉네임을 입력하세요> ";
 
-    public static OnCallMonth readMonthAndStartDay() {
-        prompt(PROMPT_MESSAGE_OF_MONTH_AND_START_DAY_);
+    public Schedule readMonthAndStartDay() {
+        prompt(PROMPT_MESSAGE_OF_MONTH_AND_START_DAY);
         String input = read();
-        OnCallMonth onCallMonth = parseMonthAndStartDay(input);
-        return onCallMonth;
+        return parseMonthAndStartDay(input);
     }
 
-    public static WorkersDto readWorkers() {
+    public WorkersDto readWorkers() {
         WeekdayWorkers weekdayWorkers = readWeekdayWorker();
         HolidayWorkers holidayWorkers = readHolidayWorker(weekdayWorkers);
         return new WorkersDto(weekdayWorkers, holidayWorkers);
@@ -45,13 +44,13 @@ public class InputView {
     }
 
     private static void prompt(String message) {
-        System.out.println(message);
+        System.out.print(message);
     }
 
     private static String read() {
         String input = Console.readLine();
         validate(input);
-        return Console.readLine();
+        return input;
     }
 
     private static void validate(String input) {
